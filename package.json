@@ -1,0 +1,24 @@
+{
+  "name": "str.grid",
+  "version": "0.0.1",
+  "description": "UI-component: Table with chart",
+  "main": "str.simple.grid.js",
+  "scripts": {
+    "test": "echo \"HelloWorld\""
+  },
+  "author": "Shaidulin Timur",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-concat-css": "^2.3.0",
+    "gulp-jshint": "^2.0.1",
+    "gulp-uglify": "^1.5.4",
+    "gulp-uglifycss": "^1.0.6",
+    "gulp-util": "^3.0.7",
+    "jshint": "^2.9.2"
+  },
+  "dependencies": {
+    "gulp-uglifycss": "^1.0.6"
+  }
+}
