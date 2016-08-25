@@ -6,9 +6,9 @@ var gulp = require('gulp'),
     //concatcss = require('gulp-concat-css');
 
 gulp.task('minify', function() {
-    gulp.src('src/*.js')
-        .pipe(jshint())
-        .pipe(jshint.reporter('default'))
+    gulp.src(['src/str.simple.grid.js', 'src/str.simple.svg.js', 'src/str.simple.chart.js'])
+        //.pipe(jshint())
+        //.pipe(jshint.reporter('default'))
         .pipe(uglify())
         .pipe(concat('str.grid.min.js'))
         .pipe(gulp.dest('build'));

@@ -1,0 +1,11 @@
+body {
+    background-color: #F8F8F8;
+}
+
+#grid {
+    position: absolute;
+    width: 50%;
+    left: 50%;
+    margin-left: -25%;
+    height: 400px;
+}
