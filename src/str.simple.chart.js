@@ -122,7 +122,7 @@
         return str;
     }
 
-    function LinearDiagram(SvgDomElement, Parameters) {
+    local.LinearDiagram = function(SvgDomElement, Parameters) {
         //  options.Data = [{ Title(Заголовок), Color(Цвет), DataSet(Набор данных) }]
         //  options.Axis - массив отбивок по горизонтале
         var graphic = new local.SvgGraphic(SvgDomElement);
@@ -398,7 +398,7 @@
         //draw();
     }
 
-    function SvgInfoBox(graphic, width, height, backgroundColor, textColor) {
+    local.SvgInfoBox = function(graphic, width, height, backgroundColor, textColor) {
         var groupSvg =null;
         var containerSvg = null;
         var titleSvg = null;

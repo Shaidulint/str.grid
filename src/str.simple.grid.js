@@ -1,3 +1,15 @@
+/*
+    TO DO:
+    1. Селектбоксы
+    2. События нажатия на строку, нажатия на ячейку, нажатия ПКМ на строку, нажатия ПКМ на ячейку
+    3. События выбора селектбокса
+    4. События всплывающего окна на графике
+    5. Параметр для отключения всплывающего окна на графике
+    6. Корректная отрисовка на графике одной точки
+    7. Корректная отрисовка всплывающего окна на точке пересечения графиков (подсказка)
+    8. Сообщение о отсутсвиии данных для отображения
+    9. Сообщения о неправильных (или об их отсутсвии) входных данных
+*/
 (function(global) {
 
     /**
@@ -81,7 +93,13 @@
              * данные
              */
             data: [],
+            /**
+             * Отрисовка пагинатора
+             */
             chartPaginator: false,
+            /**
+             * Параметры столбцов
+             */
             columns: [{name: "Name", index: "name" }]       //name, index, width, inChart
         }
         var options = extend(defaultoptions, parameters),
@@ -126,7 +144,7 @@
             bodyContainer = createEl('div', 'str-grid__body-container', commonContainer);
 
             headTable = createEl('table', 'str-grid__head-table', headContainer);
-            bodyTable = createEl('table', 'str-grid__body-table', bodyTable);
+            bodyTable = createEl('table', 'str-grid__body-table', bodyContainer);
 
             headColgroup = createEl('colgroup', null, headTable);
             bodyColgroup = createEl('colgroup', null, bodyTable);
@@ -177,15 +195,21 @@
             chartContent.setAttribute("class", "str-grid__chart-content");
             chartContainer.appendChild(chartContent);
 
+            
+
             chartGridToggler = document.createElement("input");
+            chartGridToggler.setAttribute('id', domID + '_chartToggler');
             chartGridToggler.setAttribute('type', 'checkbox');
-            chartGridToggler.className = "str-grid__chart-grid-toggler str-grid__icon";
+            chartGridToggler.className = "str-grid__chart-grid-toggler";
             chartGridToggler.addEventListener('change', function(evt) {
                 chartGridToggle();
             })
             commonContainer.appendChild(chartGridToggler);
 
-            chart = new LinearDiagram(chartContent, {});
+            var togglerLabel = createEl('label', 'str-grid__chart-grid-toggler-label', commonContainer);
+            togglerLabel.htmlFor = domID + '_chartToggler';
+
+            chart = new global.StrGrid.LinearDiagram(chartContent, {});
         }
 
         /**
@@ -204,17 +228,19 @@
             bodyContainer.style.height = bodyContainerHeight + "px";
         }
 
-        //  Обновить данные в таблице
-        var gridDataInitialize = function (IndexPage) {
+        /**
+         * Обновить данные в таблице
+         */
+        var gridDataInitialize = function (indexPage) {
             var dataForVisualize = null;
             if (options.initPaginator)
-                dataForVisualize = getDataForVisualize(IndexPage * countRowsInPage, countRowsInPage);
+                dataForVisualize = getDataForVisualize(indexPage * countRowsInPage, countRowsInPage);
             else
                 dataForVisualize = getDataForVisualize();
 
             var rows = "";
             for(var i = 0; i < dataForVisualize.length; i++) {
-                rows += getHTMLTableRow(dataForVisualize[i], options.Columns);
+                rows += getHTMLTableRow(dataForVisualize[i], options.columns);
             }
             bodyContent.innerHTML = rows;
 
@@ -226,6 +252,9 @@
                 chartDataInitialize(dataForVisualize);
         }
 
+        /**
+         * Перерисовка диаграммы
+         */
         var chartReDraw = function() {
             var dataForVisualize = null;
             if (options.initPaginator)
@@ -235,6 +264,9 @@
             chartDataInitialize(dataForVisualize);
         }
 
+        /**
+         * Генерация данных для диаграммы и их отрисовка
+         */
         var chartDataInitialize = function(data) {
             var dataForChart = [];
             var axisForChart = [];
@@ -286,7 +318,7 @@
 
         //  Возвращает максимальное кол-во страниц
         var getCountPages = function() {
-            return Math.ceil(options.Data.length / countRowsInPage);
+            return Math.ceil(options.data.length / countRowsInPage);
         }
 
         //  Обновляет номер страницы в пагинаторе
@@ -300,7 +332,7 @@
             var select = document.createElement('select');
             select.className = 'str-grid__paginator-select-count-row';
             for(var i in options.countRow) {
-                var optionEl = document.createElement('options');
+                var optionEl = document.createElement('option');
                 optionEl.value = options.countRow[i];
                 optionEl.innerText = options.countRow[i];
                 select.appendChild(optionEl);
@@ -361,7 +393,7 @@
         }
 
         var canDrawChart = function() {
-            return options.columns.some(col => col.chartData);
+            return options.columns.some(function(col) { return col.chartData;});
         }
 
         var chartGridToggle = function() {

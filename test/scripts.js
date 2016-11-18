@@ -20,7 +20,7 @@ function ready() {
     }
 
     var grid = StrGrid('grid', {
-        Columns: [{
+        columns: [{
             name: 'Дата',
             index: 'date',
             width: 100,
@@ -38,8 +38,8 @@ function ready() {
             index: 'prop3',
             chartData: true
         }],
-        Data: data,
-        InitPaginator: true
+        data: data,
+        initPaginator: true
     });
 }
 
